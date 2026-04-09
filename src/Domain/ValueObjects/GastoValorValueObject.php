@@ -1,22 +1,21 @@
 <?php
-
+require_once __DIR__ . '/../Exceptions/InvalidGastoValueException.php';
 class GastoValorValueObject
 {
-    private float $valorSinIva;
-    private float $iva;
-    private float $valorTotal;
+    private $value;
 
-    public function __construct(float $valorSinIva, float $iva)
-    {
-        if ($valorSinIva < 0 || $iva < 0) {
-            throw new InvalidArgumentException("Los valores de la factura no pueden ser negativos.");
+    public function __construct($value) {
+        if ($value === null || $value === '') {
+            throw InvalidGastoValueException::becauseValueIsEmpty();
         }
 
-        $this->valorSinIva = $valorSinIva;
-        $this->iva = $iva;   
-        $this->valorTotal = $valorSinIva + $iva;
+        if ($value < 0) {
+            throw InvalidGastoValueException::becauseValueIsNegative($value);
+        }
+
+        $this->value = $value;
     }
-    public function getValorSinIva(): float { return $this->valorSinIva; }
-    public function getIva(): float { return $this->iva; }
-    public function getValorTotal(): float { return $this->valorTotal; }
+
+    public function value() { return $this->value; }
+    public function __toString() { return (string)$this->value; }
 }

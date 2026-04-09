@@ -1,19 +1,17 @@
 <?php
-
+require_once __DIR__ . '/../Exceptions/InvalidGastoLocationException.php';
 class GastoLugarValueObject
 {
-    private string $nombreEmpresa;
+    private $value;
 
-    public function __construct(string $nombreEmpresa)
-    {
-        if (strlen($nombreEmpresa) < 3) {
-            throw new InvalidArgumentException("El nombre de la empresa prestadora es demasiado corto.");
+    public function __construct($value) {
+        $normalized = trim((string)$value);
+        if ($normalized === '') {
+            throw InvalidGastoLocationException::becauseValueIsEmpty();
         }
-        $this->nombreEmpresa = $nombreEmpresa;
+        $this->value = $normalized;
     }
 
-    public function getValue(): string
-    {
-        return $this->nombreEmpresa;
-    }
+    public function value() { return $this->value; }
+    public function __toString() { return (string)$this->value; }
 }
