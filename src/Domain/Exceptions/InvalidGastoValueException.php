@@ -11,4 +11,8 @@ class InvalidGastoValueException extends InvalidArgumentException {
         return new self('El valor del gasto no puede estar vacío.');
     }
 
+    public static function becauseValueIsNotNumeric($value)
+    {
+        return new self('El valor del gasto debe ser un número válido, pero recibimos: "' . $value . '"');
+    }
 }
