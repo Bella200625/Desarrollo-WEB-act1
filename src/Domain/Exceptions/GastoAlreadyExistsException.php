@@ -1,6 +1,6 @@
 <?php
 class GastoAlreadyExistsException extends DomainException {
-    public static function becauseReferenceAlreadyExists($ref) {
-        return new self('Este gasto ya fue registrado con la referencia: ' . $ref);
+    public static function becauseReferenceAlreadyExists($id) {
+        return new self('Ya existe un gasto registrado con el ID: ' . $id);
     }
 }

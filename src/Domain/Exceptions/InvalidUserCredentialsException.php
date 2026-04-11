@@ -1,6 +1,6 @@
 <?php 
 declare(strict_types=1); 
-final class InvalidCredentialsException extends RuntimeException { 
+final class InvalidUserCredentialsException extends RuntimeException { 
  public static function becauseCredentialsAreInvalid(): self { 
  return new self('Correo o contraseña incorrectos.'); } 
 
