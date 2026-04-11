@@ -5,17 +5,17 @@ class UserRoleEnum
     const ADMIN = 'ADMIN';
     const MEMBER = 'MEMBER';
     const REVIEWER = 'REVIEWER';
-    public static function values(): array
+    public static function values()
     {
-        return [self::ADMIN, self::MEMBER, self::REVIEWER];
+        return array (self::ADMIN, self::MEMBER, self::REVIEWER);
     }
 
-    public static function isValid($value): bool
+    public static function isValid($value)
     {
         return in_array($value, self::values(), true);
     }
     //TIRA LA EXCEPCION SI ES FALSE 
-    public static function ensureIsValid($value): void
+    public static function ensureIsValid($value)
     {
         if (!self::isValid($value)) {
             // EXCEPCIÓN

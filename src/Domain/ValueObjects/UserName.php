@@ -11,7 +11,7 @@ class UserName
         if ($normalized === '') {
             throw InvalidUserNameException::becauseValueIsEmpty();
         }
-        if (strlen($normalized) < 3) {
+        if (mb_strlen($normalized) < 3) {
             throw InvalidUserNameException::becauseLengthIsTooShort(3);
         }
         $this->value = $normalized;
