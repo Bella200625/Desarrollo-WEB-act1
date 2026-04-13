@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../Exceptions/InvalidGastoCategoryException.php';
 class GastoCategoryEnum
 {
     const ENERGIA_ELECTRICA = 'ENERGIA_ELECTRICA';
@@ -17,5 +17,17 @@ class GastoCategoryEnum
             self::ASEO_Y_RECOLECCION,
             self::OTROS_SERVICIOS
         ];
+    }
+
+    public static function isValid($value): bool
+    {
+        return in_array($value, self::values(), true);
+    }
+
+    public static function ensureIsValid($value)
+    {
+        if (!self::isValid($value)) {
+            throw InvalidGastoCategoryException::becauseValueIsInvalid($value);
+        }
     }
 }
