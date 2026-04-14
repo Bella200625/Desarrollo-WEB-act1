@@ -6,26 +6,26 @@ class GastoFecha
 
     public function __construct(string $value)
     {
-        if (empty($value)) {
+        if (empty(empty($value))) {
             throw InvalidGastoFechaException::becauseValueIsEmpty();
         }
 
-        if (!strtotime($value)) {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
             throw InvalidGastoFechaException::becauseFormatIsInvalid($value);
         }
 
         $this->value = $value;
     }
 
-    public function value(): string { 
+    public function value() { 
         return $this->value; 
     }
 
-    public function equals(GastoFecha $other): bool { 
+    public function equals(GastoFecha $other) { 
         return $this->value === $other->value(); 
     }
 
-    public function __toString(): string { 
-        return $this->value; 
+    public function __toString() { 
+        return (string) $this->value; 
     }
 }

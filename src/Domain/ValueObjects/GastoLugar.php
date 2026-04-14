@@ -8,18 +8,22 @@ class GastoLugar {
         if (empty(trim($value))) {
             throw InvalidGastoLugarException::becauseValueIsEmpty();
         }
+
+        if (strlen($value) < 3) {
+            throw InvalidGastoLugarException::becauseLengthIsTooShort(3);
+        }
         $this->value = $value;
     }
 
-    public function value(): string { 
+    public function value() { 
         return $this->value; 
     }
 
-    public function equals(GastoLugar $other): bool { 
+    public function equals(GastoLugar $other) { 
         return $this->value === $other->value(); 
     }
 
-    public function __toString(): string { 
+    public function __toString() { 
         return $this->value; 
     }
 }

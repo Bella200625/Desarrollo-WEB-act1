@@ -2,119 +2,154 @@
 
 declare(strict_types=1);
 
-// --- IMPORTAMOS NUESTRAS PIEZAS (Value Objects y Enums) ---
 require_once __DIR__ . '/../ValueObjects/GastoId.php';
-require_once __DIR__ . '/../ValueObjects/GastoValue.php';
-require_once __DIR__ . '/../ValueObjects/GastoDescription.php';
-require_once __DIR__ . '/../ValueObjects/GastoIva.php';
 require_once __DIR__ . '/../ValueObjects/GastoFecha.php';
+require_once __DIR__ . '/../ValueObjects/GastoAmount.php';
 require_once __DIR__ . '/../ValueObjects/GastoLugar.php';
-require_once __DIR__ . '/../Enums/GastoCategoryEnum.php';
+require_once __DIR__ . '/../ValueObjects/GastoDescription.php';
+require_once __DIR__ . '/../Enums/GastoServicioTipoEnum.php';
 
 final class GastoModel
 {
-    // Atributos definidos con nuestras piezas
     private GastoId $id;
-    private GastoValue $value;
-    private GastoDescription $description;
-    private GastoIva $iva;
     private GastoFecha $fecha;
+    private string $tipoServicio;
+    private GastoAmount $montoSinIva;
+    private float $iva;
+    private float $montoTotal;
     private GastoLugar $lugar;
-    private string $category;
+    private GastoDescription $descripcion;
 
-    // CONSTRUCTOR (Para reconstruir un gasto existente)
     public function __construct(
         GastoId $id,
-        GastoValue $value,
-        GastoDescription $description,
-        GastoIva $iva,
         GastoFecha $fecha,
+        string $tipoServicio,
+        GastoAmount $montoSinIva,
         GastoLugar $lugar,
-        string $category
+        GastoDescription $descripcion
     ) {
-        // El Enum valida que el texto de la categoría sea real
-        GastoCategoryEnum::ensureIsValid($category);
+        GastoServicioTipoEnum::ensureIsValid($tipoServicio);
 
         $this->id = $id;
-        $this->value = $value;
-        $this->description = $description;
-        $this->iva = $iva;
         $this->fecha = $fecha;
+        $this->tipoServicio = $tipoServicio;
+        $this->montoSinIva = $montoSinIva;
         $this->lugar = $lugar;
-        $this->category = $category;
+        $this->descripcion = $descripcion;
+
+        $this->iva = $montoSinIva->value() * 0.19;
+        $this->montoTotal = $montoSinIva->value() + $this->iva;
     }
 
-    // MÉTODO CREATE para cuando nace un gasto
     public static function create(
         GastoId $id,
-        GastoValue $value,
-        GastoDescription $description,
-        GastoIva $iva,
         GastoFecha $fecha,
+        string $tipoServicio,
+        GastoAmount $montoSinIva,
         GastoLugar $lugar,
-        string $category
+        GastoDescription $descripcion
     ): self {
-        return new self($id, $value, $description, $iva, $fecha, $lugar, $category);
-    }
-
-    //GETTERS 
-    public function id(): GastoId { return $this->id; }
-    public function value(): GastoValue { return $this->value; }
-    public function description(): GastoDescription { return $this->description; }
-    public function iva(): GastoIva { return $this->iva; }
-    public function fecha(): GastoFecha { return $this->fecha; }
-    public function lugar(): GastoLugar { return $this->lugar; }
-    public function category(): string { return $this->category; }
-
-
-
-
-    // MÉTODOS DE CAMBIO 
-
-
-    public function changeValue(GastoValue $value): self {
         return new self(
-            $this->id, 
-            $value, 
-            $this->description, 
-            $this->iva, 
-            $this->fecha, 
-            $this->lugar, 
-            $this->category);
+            $id,
+            $fecha,
+            $tipoServicio,
+            $montoSinIva,
+            $lugar,
+            $descripcion
+        );
     }
 
-    public function changeDescription(GastoDescription $description): self {
+    // --- GETTERS ---
+
+    public function id(): GastoId 
+    { 
+        return $this->id; 
+    }
+
+    public function fecha(): GastoFecha 
+    { 
+        return $this->fecha; 
+    }
+
+    public function tipoServicio(): string 
+    { 
+        return $this->tipoServicio; 
+    }
+
+    public function montoSinIva(): GastoAmount 
+    { 
+        return $this->montoSinIva; 
+    }
+
+    public function iva(): float 
+    { 
+        return $this->iva; 
+    }
+
+    public function montoTotal(): float 
+    { 
+        return $this->montoTotal; 
+    }
+
+    public function lugar(): GastoLugar 
+    { 
+        return $this->lugar; 
+    }
+
+    public function descripcion(): GastoDescription 
+    { 
+        return $this->descripcion; 
+    }
+
+    // --- MÉTODOS DE CAMBIO (INMUTABILIDAD) ---
+
+    public function changeAmount(GastoAmount $montoSinIva): self 
+    {
         return new self(
-            $this->id, 
-            $this->value, 
-            $description, 
-            $this->iva, 
-            $this->fecha, 
-            $this->lugar, 
-            $this->category);
+            $this->id,
+            $this->fecha,
+            $this->tipoServicio,
+            $montoSinIva,
+            $this->lugar,
+            $this->descripcion
+        );
     }
 
-    public function changeCategory(string $category): self {
+    public function changeLugar(GastoLugar $lugar): self 
+    {
         return new self(
-            $this->id, 
-            $this->value, 
-            $this->description, 
-            $this->iva, 
-            $this->fecha, 
-            $this->lugar, 
-            $category);
+            $this->id,
+            $this->fecha,
+            $this->tipoServicio,
+            $this->montoSinIva,
+            $lugar,
+            $this->descripcion
+        );
     }
 
-    // TO ARRAY (Para pasar los datos a la base de datos o simplemente mostrarlos)
-    public function toArray(): array {
+    public function changeTipoServicio(string $tipoServicio): self 
+    {
+        return new self(
+            $this->id,
+            $this->fecha,
+            $tipoServicio,
+            $this->montoSinIva,
+            $this->lugar,
+            $this->descripcion
+        );
+    }
+
+    public function toArray(): array 
+    {
         return [
             'id' => $this->id->value(),
-            'value' => $this->value->value(),
-            'description' => $this->description->value(),
-            'iva' => $this->iva->value(),
             'fecha' => $this->fecha->value(),
+            'tipo_servicio' => $this->tipoServicio,
+            'monto_sin_iva' => $this->montoSinIva->value(),
+            'iva' => $this->iva,
+            'monto_total' => $this->montoTotal,
             'lugar' => $this->lugar->value(),
-            'category' => $this->category
+            'descripcion' => $this->descripcion->value()
         ];
     }
 }

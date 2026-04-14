@@ -1,9 +1,8 @@
 <?php
-
 class InvalidGastoIdException extends InvalidArgumentException
 {
-    public static function becauseValueIsEmpty()
+    public static function becauseValueIsEmpty(): self
     {
-        return new self('El ID del gasto no puede estar vacío.');
+        return new self('Error: El ID se generó vacío. Por favor, volver a intentar.');
     }
 }

@@ -11,15 +11,15 @@ class GastoId
         $this->value = $value;
     }
 
-    public function value(): string { 
+    public function value() { 
         return $this->value; 
     }
 
-    public function equals(GastoId $other): bool { 
+    public function equals(GastoId $other) { 
         return $this->value === $other->value(); 
     }
 
-    public function __toString(): string { 
+    public function __toString() { 
         return $this->value; 
     }
 }
