@@ -19,6 +19,10 @@ class UserPassword
         $this->value = $normalized;
     }
 
+    public static function fromPlainText(string $value): self 
+    { 
+        return new self($value); 
+    }
 
     public function value() { return $this->value; }
     public function equals(UserPassword $other) { return $this->value === $other->value(); }
