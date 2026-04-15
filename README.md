@@ -1,43 +1,84 @@
-# Desarrollo-WEB-act1
+# Desarrollo Web - Actividad 1
+## Sistema de Gestión de Gastos y Usuarios
 
-Sistema de Gestion de Usuarios y Facturacion de Servicios Publicos
+Este proyecto implementa un sistema para la administración de usuarios y el 
+control de facturación de servicios públicos, siguiendo los principios de 
+Arquitectura Hexagonal y Diseño Orientado al Dominio (DDD).
 
-    Este proyecto implementa la capa de dominio siguiendo los principios de Diseño Orientado al Dominio (DDD) y Arquitectura Hexagonal. El sistema esta desarrollado en PHP y se centra en la gestion tecnica de usuarios y el control de gastos asociados a servicios basicos.
 
-Enfoque del Ejercicio
-    El sistema ha sido adaptado para el seguimiento de facturas de servicios publicos domiciliarios en el contexto de la ciudad de Cartagena. Se especializa en el registro y validacion de costos de operacion de un hogar o establecimiento.
+## Estructura de Capas
 
-Estructura de la Entidad Gasto
-    De acuerdo con los requerimientos academicos, la entidad Gasto maneja los siguientes atributos de negocio:
+### 1. Domain (Núcleo)
 
-        - Fecha: Registro cronologico de la emision de la factura.
+Es la base del sistema. Contiene los elementos esenciales del negocio y no 
+depende de ninguna tecnología externa.
 
-        - Valor Total Sin IVA: Base imponible del servicio prestado.
+- Models:
+  Clases principales que representan los datos (Gasto y User)
 
-        - IVA Total: Calculo del impuesto aplicado segun la normativa del servicio.
+- Enums:
+  Definiciones para TipoServicio, Role y Status
 
-        - Valor Total Con IVA: Monto final liquidado en la factura.
+- Exceptions:
+  Manejo de errores específicos del negocio
 
-        - Lugar: Empresa prestadora del servicio (Afinia, Aguas de Cartagena, Surtigas, Veolia).
+- Value Objects:
+  Objetos encargados de validar la integridad de datos
 
-        - Categoria: Clasificacion mediante Enums (Energia, Agua, Gas, Aseo).
+- Eventos:
+  Gestión de sucesos dentro del dominio
 
-        - Descripcion: Detalle conceptual del cobro o consumo.
 
-Estructura de la Entidad Usuario
-    Entidad comun que gestiona el acceso y los permisos dentro del sistema:
+### 2. Application (Casos de Uso)
 
-        - ID: Identificador unico de usuario.
+Orquesta la lógica del sistema y conecta el dominio con el mundo exterior.
 
-        - Clave: Credencial de acceso encriptada.
+- Ports:
+  Definición de puertos de entrada (Input) y salida (Output)
 
-        - Nombre: Nombre completo del titular.
+- Services:
+  Contiene la lógica de los casos de uso
 
-        - Rol: Nivel de permisos (ADMIN, MEMBER, REVIEWER).
+    * DTO:
+      Objetos para transferencia de datos
 
-Componentes de la Capa de Dominio
-    1. Exceptions: Gestion de errores especificos para validaciones de entrada y reglas de negocio.
+    * Mapper:
+      Transformadores entre capas
 
-    2. Enums: Definicion de tipos de datos cerrados para consistencia de la informacion.
+    * Casos de Uso:
+      Lógica principal del sistema
 
-    3. Value Objects: (En proceso) Objetos encargados de la integridad y validacion de cada atributo.
+
+### 3. Infrastructure (Herramientas)
+
+Encargada de la implementación técnica y la comunicación con sistemas externos.
+
+- Adapters:
+  Incluye la persistencia y la conexión real a la base de datos
+
+- EntryPoints:
+  Controladores e interfaces que interactúan con el usuario
+
+
+### 4. Common
+
+Contiene utilidades compartidas por todas las capas, como validaciones 
+generales y herramientas de apoyo.
+
+
+## Entidades del Sistema
+
+El sistema se enfoca en dos componentes principales:
+
+1. Gasto:
+   Registro de facturas de servicios públicos (Agua, Luz, Gas), incluyendo 
+   IVA y proveedores locales
+
+2. User:
+   Gestión de acceso, perfiles y estados de seguridad de los usuarios
+
+
+## Stack Tecnológico
+
+- Lenguaje: PHP 8.x
+- Base de datos: MySQL (XAMPP)
