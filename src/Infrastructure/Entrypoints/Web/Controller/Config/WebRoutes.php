@@ -10,6 +10,8 @@ final class WebRoutes
     public static function routes(): array
     {
         return array(
+
+        // --- RUTAS DE INICIO Y AUTH ---
             'home' => array(
                 'method' => 'GET',
                 'action' => 'home',
@@ -62,6 +64,33 @@ final class WebRoutes
                 'method' => 'POST',
                 'action' => 'forgot.send',
             ),
+        // --- AQUÍ EMPIEZAN GASTOS ---
+            'gastos.index' => array(
+                'method' => 'GET',
+                'action' => 'gastos.index',
+            ),
+            'gastos.create' => array(
+                'method' => 'GET',
+                'action' => 'gastos.create',
+            ),
+            'gastos.store' => array(
+                'method' => 'POST',
+                'action' => 'gastos.store',
+            ),
+            'gastos.edit' => array(
+                'method' => 'GET',
+                'action' => 'gastos.edit',
+            ),
+            'gastos.update' => array(
+                'method' => 'POST',
+                'action' => 'gastos.update',
+            ),
+            'gastos.delete' => array(
+                'method' => 'POST',
+                'action' => 'gastos.delete',
+            ),
+
+            
         );
     }
 }
