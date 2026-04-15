@@ -1,41 +1,77 @@
 <?php
 
-class UserWebMapper
+declare(strict_types=1);
+
+// DTOs de la capa Web (Entrada/Salida)
+require_once __DIR__ . '/../Dto/CreateUserWebRequest.php';
+require_once __DIR__ . '/../Dto/UpdateUserWebRequest.php';
+require_once __DIR__ . '/../Dto/UserResponse.php';
+
+// DTOs de la capa de Aplicación (Commands/Queries)
+require_once __DIR__ . '/../../../../../Application/Services/Dto/Commands/CreateUserCommand.php';
+require_once __DIR__ . '/../../../../../Application/Services/Dto/Commands/UpdateUserCommand.php';
+require_once __DIR__ . '/../../../../../Application/Services/Dto/Commands/DeleteUserCommand.php';
+require_once __DIR__ . '/../../../../../Application/Services/Dto/Queries/GetUserByIdQuery.php';
+
+// Modelo del Dominio
+require_once __DIR__ . '/../../../../../Domain/Models/UserModel.php';
+
+final class UserWebMapper
 {
-    // De lo que llega de la web (Request) -> Al comando de creación
-    public function toCreateCommand(CreateUserRequest $request)
+    public function fromCreateRequestToCommand(CreateUserWebRequest $request): CreateUserCommand
     {
         return new CreateUserCommand(
-            uniqid(),
-            $request->name,
-            $request->email,
-            $request->password,
-            $request->role
+            $request->getId(),
+            $request->getName(),
+            $request->getEmail(),
+            $request->getPassword(),
+            $request->getRole()
         );
     }
 
-    // De lo que llega de la web (Request) -> Al comando de actualización
-    public function toUpdateCommand(UpdateUserRequest $request)
+    public function fromUpdateRequestToCommand(UpdateUserWebRequest $request): UpdateUserCommand
     {
         return new UpdateUserCommand(
-            $request->id,
-            $request->name,
-            $request->email,
-            $request->password,
-            $request->role,
-            $request->status
+            $request->getId(),
+            $request->getName(),
+            $request->getEmail(),
+            $request->getPassword(),
+            $request->getRole(),
+            $request->getStatus()
         );
     }
 
-    // De lo que sale del sistema (Modelo) -> A lo que ve el usuario (Response)
-    public function toResponse($userModel)
+    public function fromIdToGetByIdQuery(string $id): GetUserByIdQuery
+    {
+        return new GetUserByIdQuery($id);
+    }
+
+    public function fromIdToDeleteCommand(string $id): DeleteUserCommand
+    {
+        return new DeleteUserCommand($id);
+    }
+
+    public function fromModelToResponse(UserModel $user): UserResponse
     {
         return new UserResponse(
-            $userModel->id()->value(),
-            $userModel->name()->value(),
-            $userModel->email()->value(),
-            $userModel->role(),
-            $userModel->status()
+            $user->id()->value(),
+            $user->name()->value(),
+            $user->email()->value(),
+            $user->role(),
+            $user->status()
         );
+    }
+
+    /**
+     * @param UserModel[] $users
+     * @return UserResponse[]
+     */
+    public function fromModelsToResponses(array $users): array
+    {
+        $responses = array();
+        foreach ($users as $user) {
+            $responses[] = $this->fromModelToResponse($user);
+        }
+        return $responses;
     }
 }
