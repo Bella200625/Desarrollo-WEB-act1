@@ -194,8 +194,7 @@ final class ClassLoader
 
         // Buscamos desde la raíz de la carpeta 'src'
         $baseDir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR; 
-        $filePath = $baseDir . self::$classMap[$className];
-
+        $filePath = $baseDir . 'src' . DIRECTORY_SEPARATOR . self::$classMap[$className];
         if (!file_exists($filePath)) {
             throw new RuntimeException(
                 sprintf('No se encontró el archivo para la clase %s en %s', $className, $filePath)

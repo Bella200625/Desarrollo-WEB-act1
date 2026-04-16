@@ -49,17 +49,23 @@
         <?php endif; ?> 
     </div> 
 
+
+
+
     <div class="form-group"> 
-        <label for="role">Rol</label><br> 
-        <select id="role" name="role"> 
-            <?php foreach ($roleOptions as $opt): ?> 
-            <option value="<?= htmlspecialchars($opt, ENT_QUOTES, 'UTF-8') ?>" 
-                <?= (($old['role'] ?? '') === $opt) ? 'selected' : '' ?> > 
-                <?= htmlspecialchars($opt, ENT_QUOTES, 'UTF-8') ?> 
-            </option> 
-            <?php endforeach; ?> 
-        </select> 
-    </div> 
+    <label for="role">Rol</label><br> 
+    <select id="role" name="role" required> 
+        <option value="">-- Selecciona un rol --</option>
+        <option value="MEMBER">MEMBER</option> 
+        <option value="ADMIN">ADMIN</option> 
+        <option value="REVIEWER">REVIEWER</option> 
+    </select> 
+</div>
+
+
+
+
+
 
     <button type="submit" class="btn btn-primary">Registrar usuario</button> 
 </form> 

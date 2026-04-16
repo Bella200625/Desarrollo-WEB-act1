@@ -2,19 +2,6 @@
 
 declare(strict_types=1);
 
-// Requerir el Mapper
-require_once __DIR__ . '/Mapper/UserWebMapper.php';
-
-// Requerir Puertos (Interfaces de Casos de Uso)
-require_once __DIR__ . '/../../../../Application/Ports/In/CreateUserUseCase.php';
-require_once __DIR__ . '/../../../../Application/Ports/In/UpdateUserUseCase.php';
-require_once __DIR__ . '/../../../../Application/Ports/In/GetUserByIdUseCase.php';
-require_once __DIR__ . '/../../../../Application/Ports/In/GetAllUsersUseCase.php';
-require_once __DIR__ . '/../../../../Application/Ports/In/DeleteUserUseCase.php';
-
-// Requerir DTOs de Aplicación necesarios
-require_once __DIR__ . '/../../../../Application/Services/Dto/Queries/GetAllUsersQuery.php';
-
 final class UserController
 {
     private CreateUserUseCase $createUserUseCase;

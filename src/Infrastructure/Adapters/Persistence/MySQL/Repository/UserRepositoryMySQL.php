@@ -31,29 +31,28 @@ final class UserRepositoryMySQL implements
         $this->mapper = $mapper;
     }
 
-    public function save(UserModel $user): UserModel
-    {
-        $dto = $this->mapper->fromModelToDto($user);
-        $sql = 'INSERT INTO users (id, name, email, password, role, status, created_at, updated_at) 
-                VALUES (:id, :name, :email, :password, :role, :status, NOW(), NOW())';
+   public function save(UserModel $user): UserModel
+{
+    $dto = $this->mapper->fromModelToDto($user);
+    $sql = 'INSERT INTO users (id, name, email, password, role, status, created_at, updated_at) 
+            VALUES (:id, :name, :email, :password, :role, :status, NOW(), NOW())';
 
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute(array(
-            ':id' => $dto->id(),
-            ':name' => $dto->name(),
-            ':email' => $dto->email(),
-            ':password' => $dto->password(),
-            ':role' => $dto->role(),
-            ':status' => $dto->status(),
-        ));
+    $statement = $this->pdo->prepare($sql);
+    $statement->execute(array(
+        ':id' => $dto->id(),
+        ':name' => $dto->name(),
+        ':email' => $dto->email(),
+        ':password' => $dto->password(),
+        ':role' => $dto->role(),
+        ':status' => $dto->status(),
+    ));
 
-        $savedUser = $this->getById(new UserId($dto->id()));
-        if ($savedUser === null) {
-            throw new RuntimeException('The user could not be recovered after save.');
-        }
-
-        return $savedUser;
+    $savedUser = $this->getById(new UserId($dto->id()));
+    if ($savedUser === null) {
+        throw new RuntimeException('Error: El usuario no se guardó correctamente.');
     }
+    return $savedUser;
+}
 
     public function update(UserModel $user): UserModel
     {
