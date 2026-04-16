@@ -30,6 +30,9 @@ final class Flash
 
         return $value;
     }
+/** 
+ * @param array<string, string> $data 
+ */ 
 
     /**
      * --- DATOS TEMPORALES ---
@@ -40,12 +43,19 @@ final class Flash
         self::set('old', $data);
     }
 
+    /** 
+ * @return array<string, string> 
+ */ 
+
     public static function old(): array
     {
         $data = self::get('old', array());
         return is_array($data) ? $data : array();
     }
 
+     /** 
+ * @param array<string, string> $errors 
+ */
     /**
      * --- ERRORES DE VALIDACIÓN ---
      * Sirve para Usuarios y Gastos (ej: "Monto no válido" o "Email repetido")
@@ -55,18 +65,27 @@ final class Flash
         self::set('errors', $errors);
     }
 
+     /** 
+ * @return array<string, string> 
+ */ 
+
     public static function errors(): array
     {
         $errors = self::get('errors', array());
         return is_array($errors) ? $errors : array();
     }
 
-    /**
-     * --- MENSAJES DE ÉXITO ---
-     * Sirve para: 
-     * - "Usuario creado con éxito"
-     * - "Gasto registrado con éxito"
-     */
+    public static function setMessage(string $message): void 
+    { 
+    self::set('message', $message); 
+    } 
+    public static function message(): string 
+    { 
+    $message = self::get('message', ''); 
+    return is_string($message) ? $message : ''; 
+    } 
+
+
     public static function setSuccess(string $message): void
     {
         self::set('success', $message);
