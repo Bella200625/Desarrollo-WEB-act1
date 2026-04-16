@@ -1,31 +1,80 @@
 <?php
 
-class Flash
+declare(strict_types=1);
+
+final class Flash
 {
-    public static function start()
+    public static function start(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
     }
 
-    public static function set($key, $message)
+    public static function set(string $key, mixed $value): void
     {
-        $_SESSION['flash'][$key] = $message;
+        self::start();
+        $_SESSION['_flash'][$key] = $value;
     }
 
-    public static function get($key)
+    public static function get(string $key, mixed $default = null): mixed
     {
-        if (isset($_SESSION['flash'][$key])) {
-            $message = $_SESSION['flash'][$key];
-            unset($_SESSION['flash'][$key]);
-            return $message;
+        self::start();
+
+        if (!isset($_SESSION['_flash'][$key])) {
+            return $default;
         }
-        return null;
+
+        $value = $_SESSION['_flash'][$key];
+        unset($_SESSION['_flash'][$key]);
+
+        return $value;
     }
 
-    public static function has($key)
+    /**
+     * --- DATOS TEMPORALES ---
+     * Sirve para Usuarios y Gastos (mantiene los datos si el formulario falla)
+     */
+    public static function setOld(array $data): void
     {
-        return isset($_SESSION['flash'][$key]);
+        self::set('old', $data);
+    }
+
+    public static function old(): array
+    {
+        $data = self::get('old', array());
+        return is_array($data) ? $data : array();
+    }
+
+    /**
+     * --- ERRORES DE VALIDACIÓN ---
+     * Sirve para Usuarios y Gastos (ej: "Monto no válido" o "Email repetido")
+     */
+    public static function setErrors(array $errors): void
+    {
+        self::set('errors', $errors);
+    }
+
+    public static function errors(): array
+    {
+        $errors = self::get('errors', array());
+        return is_array($errors) ? $errors : array();
+    }
+
+    /**
+     * --- MENSAJES DE ÉXITO ---
+     * Sirve para: 
+     * - "Usuario creado con éxito"
+     * - "Gasto registrado con éxito"
+     */
+    public static function setSuccess(string $message): void
+    {
+        self::set('success', $message);
+    }
+
+    public static function success(): string
+    {
+        $message = self::get('success', '');
+        return is_string($message) ? $message : '';
     }
 }

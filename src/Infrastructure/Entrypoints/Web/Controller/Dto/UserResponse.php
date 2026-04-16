@@ -1,6 +1,6 @@
 <?php
-
-class UserResponse
+declare(strict_types=1); 
+final class UserResponse
 {
     private string $id;
     private string $name;

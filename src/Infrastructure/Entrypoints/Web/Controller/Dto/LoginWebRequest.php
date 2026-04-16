@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-class LoginWebRequest
+final class LoginWebRequest
 {
     private string $email;
     private string $password;

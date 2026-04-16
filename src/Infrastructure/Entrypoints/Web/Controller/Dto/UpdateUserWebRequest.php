@@ -1,6 +1,6 @@
 <?php
-
-class UpdateUserWebRequest
+declare(strict_types=1); 
+final class UpdateUserWebRequest
 {
     private string $id; 
     private string $name; 

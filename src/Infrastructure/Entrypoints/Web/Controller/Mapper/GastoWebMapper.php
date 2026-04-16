@@ -13,6 +13,7 @@ require_once __DIR__ . '/../../../../Application/Services/Dto/Commands/UpdateGas
 require_once __DIR__ . '/../../../../Application/Services/Dto/Commands/DeleteGastoCommand.php';
 require_once __DIR__ . '/../../../../Application/Services/Dto/Queries/GetGastoByIdQuery.php';
 
+require_once __DIR__ . '/../../../../../Domain/Models/GastosModel.php';
 final class GastoWebMapper
 {
     /**
