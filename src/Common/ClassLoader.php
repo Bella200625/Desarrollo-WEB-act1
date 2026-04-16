@@ -169,11 +169,15 @@ final class ClassLoader
         'GastoWebMapper' => 'Infrastructure/Entrypoints/Web/Controller/Mapper/GastoWebMapper.php',
         'UserWebMapper' => 'Infrastructure/Entrypoints/Web/Controller/Mapper/UserWebMapper.php',
 
+        
+
         // --- INFRAESTRUCTURA: CONTROLADORES ---
         'GastoController' => 'Infrastructure/Entrypoints/Web/Controller/GastoController.php',
         'UserController' => 'Infrastructure/Entrypoints/Web/Controller/UserController.php',
 
-        // --- PRESENTACIÓN: (Vacío) ---
+        // --- PRESENTACIÓN: UTILIDADES DE VISTA Y MENSAJES ---
+        'View' => 'Infrastructure/Entrypoints/Web/Presentation/View.php',
+        'Flash' => 'Infrastructure/Entrypoints/Web/Presentation/Flash.php',
 
     );
 
