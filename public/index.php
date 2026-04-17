@@ -98,7 +98,7 @@ try {
             View::render('users/create', buildCreateUserViewData());
             break;
 
-        case 'users.store':
+        case 'store':
             $controller = DependencyInjection::getUserController();
             $form = getCreateUserFormData();
             $form['id'] = generateUuid4();
@@ -196,9 +196,6 @@ try {
             break;
 
         case 'authenticate':
-            ClassLoader::loadClass('LoginCommand');
-            ClassLoader::loadClass('LoginUseCase');
-            ClassLoader::loadClass('UserEmail');
 
             $email = trim(strtolower((string) ($_POST['email'] ?? '')));
             $password = (string) ($_POST['password'] ?? '');

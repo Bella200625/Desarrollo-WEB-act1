@@ -28,7 +28,7 @@
 <?php else: ?>
     <div style="background: #eef9ff; padding: 20px; border-radius: 8px; border: 1px solid #b6d4fe;">
         <h3>¡Bienvenido, <?= htmlspecialchars($authUser['name'] ?? 'Usuario') ?>!</h3>
-        <p>Desde aquí vas a poder registrar tus gastos de luz, de gas o de agua. Pero primero </p>
+        <p>Desde aquí vas a poder registrar tus gastos de luz, de gas o de agua. </p>
         <p style="color: hsl(268, 57%, 73%); font-style: italic;">Próximamente: Módulo de gestión de servicios públicos.</p>
     </div>
 <?php endif; ?>
