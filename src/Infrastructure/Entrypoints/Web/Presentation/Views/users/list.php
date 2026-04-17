@@ -20,6 +20,17 @@
                 <td><?= htmlspecialchars($user->getEmail(), ENT_QUOTES, 'UTF-8') ?></td> 
                 <td><?= htmlspecialchars($user->getRole(), ENT_QUOTES, 'UTF-8') ?></td> 
                 <td><?= htmlspecialchars($user->getStatus(), ENT_QUOTES, 'UTF-8') ?></td> 
+                
+        <td>
+                <a href="index.php?route=users.edit&id=<?= $user->getId() ?>" 
+                style="background: #6f00ff; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px;">
+                Editar
+                </a>
+            </td>
+
+
+            
+            
             </tr> 
             <?php endforeach; ?> 
         </tbody> 

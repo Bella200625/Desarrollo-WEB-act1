@@ -54,7 +54,7 @@ final class UserModel
             $email,
             $password,
             $role,
-            UserStatusEnum::PENDING // siempre nace pending
+            UserStatusEnum::ACTIVE // siempre nace pending
         );
     }
 

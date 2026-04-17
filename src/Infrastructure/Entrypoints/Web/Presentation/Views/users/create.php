@@ -52,15 +52,15 @@
 
 
 
-    <div class="form-group"> 
-    <label for="role">Rol</label><br> 
-    <select id="role" name="role" required> 
-        <option value="">-- Selecciona un rol --</option>
-        <option value="MEMBER">MEMBER</option> 
-        <option value="ADMIN">ADMIN</option> 
-        <option value="REVIEWER">REVIEWER</option> 
-    </select> 
-</div>
+    <?php if ($authUser && $authUser['role'] === 'ADMIN'): ?>
+    <label for="role">Rol del usuario:</label>
+    <select name="role" id="role">
+        <option value="MEMBER">Miembro (MEMBER)</option>
+        <option value="ADMIN">Administrador (ADMIN)</option>
+    </select>
+<?php else: ?>
+    <input type="hidden" name="role" value="MEMBER">
+<?php endif; ?>
 
 
 

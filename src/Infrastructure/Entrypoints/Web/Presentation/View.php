@@ -16,7 +16,7 @@ final class View
         }
 
         // Convierte las llaves del array en variables 
-        
+        extract($data);
         require $file;
     }
 

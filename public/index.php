@@ -14,13 +14,12 @@ declare(strict_types=1);
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        $dest = isset($_SESSION['auth']['id']) ? 'home' : 'auth.login';
+        $dest = isset($_SESSION['auth']['id']) ? 'home' : 'home';
         header('Location: ' . $publicBase . '/index.php?route=' . $dest);
         exit;
     }
 })();
 
-// --- CARGA DE DEPENDENCIAS ---
 // --- CARGA DE DEPENDENCIAS ---
 require_once dirname(__DIR__) . '/src/Common/ClassLoader.php';
 require_once dirname(__DIR__) . '/src/Common/DependencyInjection.php';
@@ -99,7 +98,7 @@ try {
             View::render('users/create', buildCreateUserViewData());
             break;
 
-        case 'store':
+        case 'users.store':
             $controller = DependencyInjection::getUserController();
             $form = getCreateUserFormData();
             $form['id'] = generateUuid4();
@@ -197,6 +196,10 @@ try {
             break;
 
         case 'authenticate':
+            ClassLoader::loadClass('LoginCommand');
+            ClassLoader::loadClass('LoginUseCase');
+            ClassLoader::loadClass('UserEmail');
+
             $email = trim(strtolower((string) ($_POST['email'] ?? '')));
             $password = (string) ($_POST['password'] ?? '');
             $authErrors = array();
@@ -231,7 +234,7 @@ try {
 
         case 'logout':
             session_destroy();
-            header('Location: ?route=auth.login');
+            header('Location: ?route= home ');
             exit;
 
         case 'forgot':
@@ -280,6 +283,10 @@ try {
     $msg = $exception->getMessage();
     Flash::setMessage($msg);
 
+    if ($definition['action'] === 'authenticate') {
+        View::redirect('auth.login'); 
+    }
+
     switch ($route) {
         
         case 'users.store':
@@ -306,11 +313,21 @@ try {
 // --- HELPER DE EMAIL ---
 function sendPasswordRecoveryEmail(string $email, string $name, string $tempPassword): void 
 {
-    $templateFile = __DIR__ . '/../Infrastructure/Entrypoints/Web/Presentation/Views/emails/forgot-password.php';
+$templateFile = dirname(__DIR__) . '/src/Infrastructure/Entrypoints/Web/Presentation/Views/email/forgot-password.php';    ob_start();
+    
+        if (!file_exists($templateFile)) {
+        return; // Por si acaso, para que no se rompa la pantalla si falla la ruta
+    }
+
     ob_start();
+
     extract(array('email' => $email, 'name' => $name, 'tempPassword' => $tempPassword), EXTR_SKIP);
     require $templateFile;
     $htmlBody = (string) ob_get_clean();
+
+
+
+
 
     $subject = '=?UTF-8?B?' . base64_encode('Recuperación de contraseña') . '?=';
     $headers = implode("\r\n", array(
