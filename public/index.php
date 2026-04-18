@@ -325,7 +325,6 @@ try {
                 }
 
                 $controller = DependencyInjection::getGastoController();
-                // Usamos el show($id) que ya tienes en tu controlador para traer el gasto
                 $gastoResponse = $controller->show((string)$id); 
 
                 View::render('gastos/edit', [
@@ -364,11 +363,9 @@ break;
             case 'gastos.store':
                 $controller = DependencyInjection::getGastoController();
 
-                // 1. Capturamos y formateamos (aseguramos el formato Y-m-d)
                 $rawFecha = $_POST['fecha'] ?? '';
                 $fechaValida = date("Y-m-d", strtotime(str_replace('/', '-', $rawFecha)));
 
-                // 2. Creamos el WebRequest respetando el orden de tu constructor
                 $request = new CreateGastoWebRequest(
                     (string)uniqid(),
                     $fechaValida,
@@ -425,7 +422,7 @@ function sendPasswordRecoveryEmail(string $email, string $name, string $tempPass
 $templateFile = dirname(__DIR__) . '/src/Infrastructure/Entrypoints/Web/Presentation/Views/email/forgot-password.php';    ob_start();
     
         if (!file_exists($templateFile)) {
-        return; // Por si acaso, para que no se rompa la pantalla si falla la ruta
+        return; 
     }
 
     ob_start();
