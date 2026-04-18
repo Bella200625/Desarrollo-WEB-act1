@@ -9,7 +9,7 @@ require_once __DIR__ . '/../Dto/Commands/DeleteGastoCommand.php';
 require_once __DIR__ . '/../Dto/Queries/GetGastoByIdQuery.php';
 
 // Importamos el Corazón (Domain) de Gastos
-require_once __DIR__ . '/../../../Domain/Models/GastoModel.php';
+require_once realpath(__DIR__ . '/../../..') . '/Domain/Models/GastosModel.php';
 require_once __DIR__ . '/../../../Domain/ValueObjects/GastoId.php';
 require_once __DIR__ . '/../../../Domain/ValueObjects/GastoFecha.php';
 require_once __DIR__ . '/../../../Domain/ValueObjects/GastoAmount.php';

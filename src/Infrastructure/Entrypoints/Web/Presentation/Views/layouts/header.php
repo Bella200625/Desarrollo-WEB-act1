@@ -1,32 +1,77 @@
-<?php declare(strict_types=1); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($pageTitle ?? 'CRUD Usuarios', ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Gastos</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        nav a { margin-right: 12px; }
-        .alert-error { margin: 12px 0; padding: 10px; border: 1px solid #d33; background: #fdeaea; }
-        .alert-success { margin: 12px 0; padding: 10px; border: 1px solid #2d8a34; background: #eaf8ec; }
-        .field-error { color: #c00; font-size: 0.9rem; }
-        .form-group { margin-bottom: 14px; }
-        label { display: inline-block; margin-bottom: 4px; }
-        input { min-width: 280px; padding: 6px; }
-        button { padding: 8px 14px; }
-        select { min-width: 280px; padding: 6px; }
-        table { border-collapse: collapse; }
-        table th, table td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
-        table.detail-table th { background: #f5f5f5; width: 140px; }
-        .btn { display: inline-block; padding: 5px 12px; text-decoration: none; cursor: pointer; border: none; border-radius: 3px; font-size: 0.9rem; background: #e0e0e0; color: #333; }
-        .btn-primary { background: #0066cc; color: #fff; }
-        .btn-primary:hover { background: #0052a3; }
-        .btn-warning { background: #e68a00; color: #fff; }
-        .btn-warning:hover { background: #cc7a00; }
-        .btn-danger { background: #cc2200; color: #fff; }
-        .btn-danger:hover { background: #aa1a00; }
-        .btn-sm { padding: 3px 8px; font-size: 0.8rem; }
-        .auth-box { max-width: 420px; margin: 40px auto; padding: 28px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; }
+        /* BASE MINIMALISTA */
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 20px; /* Reducido para que no flote tanto */
+        }
+
+        /* HEADER LIMPIO - SOLO TÍTULO */
+        .card-header-main {
+            padding: 40px 0 20px 0;
+            border-bottom: 1px solid #f2f2f2;
+            margin-bottom: 40px;
+        }
+
+        .card-header-main h1 {
+            font-weight: 300;
+            font-size: 2.2rem;
+            margin: 0;
+            letter-spacing: -1.5px;
+            color: #000;
+        }
+
+        /* FORMULARIOS MODERNOS (REUTILIZABLES) */
+        .form-control {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 1px solid #eee;
+            background: transparent;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus { border-bottom-color: #7d4ec8; }
+
+        /* BOTONES SÓLIDOS */
+        .btn-main {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+        .btn-main:hover { background: #333; }
+
+        /* SCROLLBAR DISCRETA */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
     </style>
 </head>
-<body></body>
+<body>
+    <div class="container">
+        <header class="card-header-main">
+            <h1>Sistema de Gestión</h1>
+        </header>

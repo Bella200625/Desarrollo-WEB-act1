@@ -1,19 +1,24 @@
 <?php
-
 declare(strict_types=1);
 
-// Requerir DTOs de Web
+
+
+/* Definimos la base de la carpeta 'src' para no perdernos con los puntos
+$basePath = dirname(__DIR__, 4); 
+
+// Requerir DTOs de Web (están en la misma carpeta que este archivo, subiendo un nivel)
 require_once __DIR__ . '/../Dto/CreateGastoWebRequest.php';
 require_once __DIR__ . '/../Dto/UpdateGastoWebRequest.php';
 require_once __DIR__ . '/../Dto/GastoResponse.php';
 
-// Requerir Commands/Queries de Aplicación
-require_once __DIR__ . '/../../../../Application/Services/Dto/Commands/CreateGastoCommand.php';
-require_once __DIR__ . '/../../../../Application/Services/Dto/Commands/UpdateGastoCommand.php';
-require_once __DIR__ . '/../../../../Application/Services/Dto/Commands/DeleteGastoCommand.php';
-require_once __DIR__ . '/../../../../Application/Services/Dto/Queries/GetGastoByIdQuery.php';
+// Requerir Commands/Queries de Aplicación (Usando la base segura)
+require_once $basePath . '/Application/Services/Dto/Commands/CreateGastoCommand.php';
+require_once $basePath . '/Application/Services/Dto/Commands/UpdateGastoCommand.php';
+require_once $basePath . '/Application/Services/Dto/Commands/DeleteGastoCommand.php';
+require_once $basePath . '/Application/Services/Dto/Queries/GetGastoByIdQuery.php';
 
-require_once __DIR__ . '/../../../../../Domain/Models/GastosModel.php';
+// Requerir el Modelo del Dominio
+require_once $basePath . '/Domain/Models/GastosModel.php'; */
 final class GastoWebMapper
 {
     /**
@@ -66,18 +71,25 @@ final class GastoWebMapper
      * Convierte el modelo del dominio a una respuesta para la web
      */
     public function fromModelToResponse(GastoModel $model): GastoResponse
-    {
-        return new GastoResponse(
-            $model->id()->value(),
-            $model->fecha()->value(),
-            $model->tipoServicio(),
-            $model->montoSinIva()->value(),
-            $model->iva(),
-            $model->montoTotal(),
-            $model->lugar()->value(),
-            $model->descripcion()->value()
-        );
-    }
+{
+    // Obtenemos el monto base
+    $montoSinIva = $model->montoSinIva()->value();
+    
+    // Calculamos aquí mismo para asegurar que NO salga vacío
+    $ivaCalculado = $montoSinIva * 0.19; 
+    $totalCalculado = $montoSinIva + $ivaCalculado;
+
+    return new GastoResponse(
+        $model->id()->value(),
+        $model->fecha()->value(),
+        $model->tipoServicio(),
+        (float)$montoSinIva,
+        (float)$ivaCalculado,
+        (float)$totalCalculado,
+        $model->lugar()->value(),
+        $model->descripcion()->value()
+    );
+}
 
     /**
      * Convierte una lista de modelos a una lista de respuestas

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../../Domain/ValueObjects/GastoId.php';
+require_once realpath(__DIR__ . '/../../..') . '/Domain/Models/GastosModel.php';
 
 interface DeleteGastoPort
 {

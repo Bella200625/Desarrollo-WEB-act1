@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../../../Application/Ports/Out/GetGastoByIdPort.p
 require_once __DIR__ . '/../../../../../Application/Ports/Out/GetAllGastosPort.php';
 require_once __DIR__ . '/../../../../../Application/Ports/Out/DeleteGastoPort.php';
 require_once __DIR__ . '/../Mapper/GastoPersistenceMapper.php';
-require_once __DIR__ . '/../../../../../Domain/Models/GastoModel.php';
+require_once realpath(__DIR__ . '/../../../../..') . '/Domain/Models/GastosModel.php';
 require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoId.php';
 
 final class GastoRepositoryMySQL implements 
@@ -44,25 +44,26 @@ final class GastoRepositoryMySQL implements
     }
 
     public function update(GastoModel $gasto): GastoModel
-    {
-        $dto = $this->mapper->fromModelToDto($gasto);
-        $sql = 'UPDATE gastos SET fecha = :fecha, tipo_servicio = :tipo_servicio, monto_sin_iva = :monto_sin_iva, iva = :iva, 
-                monto_total = :monto_total, lugar = :lugar, descripcion = :descripcion, updated_at = NOW() WHERE id = :id';
+{
+    $dto = $this->mapper->fromModelToDto($gasto);
+    $sql = 'UPDATE gastos SET fecha = :fecha, tipo_servicio = :tipo_servicio, monto_sin_iva = :monto_sin_iva, iva = :iva, 
+            monto_total = :monto_total, lugar = :lugar, descripcion = :descripcion, updated_at = NOW() WHERE id = :id';
 
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            ':id' => $dto->id(),
-            ':fecha' => $dto->fecha(),
-            ':tipo_servicio' => $dto->tipoServicio(),
-            ':monto_sin_iva' => $dto->montoSinIva(),
-            ':iva' => $dto->iva(),
-            ':monto_total' => $dto->montoTotal(),
-            ':lugar' => $dto->lugar(),
-            ':descripcion' => $dto->descripcion(),
-        ]);
+    $statement = $this->pdo->prepare($sql);
+    
+    $statement->execute([
+        ':id'             => (string)$dto->id(),
+        ':fecha'          => (string)$dto->fecha(),
+        ':tipo_servicio'  => (string)$dto->tipoServicio(),
+        ':monto_sin_iva'  => (float)$dto->montoSinIva(),
+        ':iva'            => (float)$dto->iva(),
+        ':monto_total'    => (float)$dto->montoTotal(),
+        ':lugar'          => (string)$dto->lugar(),
+        ':descripcion'    => (string)$dto->descripcion(),
+    ]);
 
-        return $this->getById(new GastoId($dto->id()));
-    }
+    return $gasto;
+}
 
     public function getById(GastoId $id): ?GastoModel
     {

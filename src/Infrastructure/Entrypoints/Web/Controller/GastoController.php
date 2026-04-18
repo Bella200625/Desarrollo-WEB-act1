@@ -40,11 +40,11 @@ final class GastoController
         $this->mapper = $mapper;
     }
 
-    public function index(): array
-    {
-        $gastos = $this->getAllGastosUseCase->execute(new GetAllGastosQuery());
-        return $this->mapper->fromModelsToResponses($gastos);
-    }
+    public function index(): array 
+{
+    $gastosModels = $this->getAllGastosUseCase->execute(new GetAllGastosQuery()); 
+    return $this->mapper->fromModelsToResponses($gastosModels); 
+}
 
     public function show(string $id): GastoResponse
     {
@@ -54,7 +54,8 @@ final class GastoController
     }
 
     public function store(CreateGastoWebRequest $request): GastoResponse
-    {
+    {   
+        
         $command = $this->mapper->fromCreateRequestToCommand($request);
         $gasto = $this->createGastoUseCase->execute($command);
         return $this->mapper->fromModelToResponse($gasto);

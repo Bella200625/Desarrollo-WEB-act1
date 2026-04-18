@@ -17,7 +17,7 @@
 <?php endif; ?>
 
 <?php if ($authUser && $authUser['role'] === 'ADMIN'): ?>
-    <h2>Gestión de Usuarios (CRUDL)</h2>    
+    <h3>Gestión de Usuarios (CRUDL)</h3>    
     <ul>
         <li><strong>C:</strong> Registrar usuario</li>
         <li><strong>R:</strong> Consultar usuario</li>
@@ -26,10 +26,15 @@
         <li><strong>L:</strong> Listar usuarios</li>
     </ul>
 <?php else: ?>
-    <div style="background: #eef9ff; padding: 20px; border-radius: 8px; border: 1px solid #b6d4fe;">
-        <h3>¡Bienvenido, <?= htmlspecialchars($authUser['name'] ?? 'Usuario') ?>!</h3>
-        <p>Desde aquí vas a poder registrar tus gastos de luz, de gas o de agua. </p>
-        <p style="color: hsl(268, 57%, 73%); font-style: italic;">Próximamente: Módulo de gestión de servicios públicos.</p>
+    <div style="background: #e1cff8; padding: 20px; border-radius: 8px; border: 1px solid #a79ef7;">
+        <h1>¡Bienvenida, <?= htmlspecialchars($authUser['name'] ?? 'Usuario') ?>!</h1>
+        <p>Hoy es un buen día para organizar tus gastos.</p>
+        
+        <div style="margin-top: 20px;">
+            <a href="?route=gastos.index" style="background: #9500a8; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                Ver mi Tablero de Gastos
+            </a>
+        </div>
     </div>
 <?php endif; ?>
 

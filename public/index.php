@@ -273,6 +273,118 @@ try {
             View::redirect('auth.forgot');
             break;
 
+            case 'gastos.index':
+                if (!isset($_SESSION['auth'])) {
+                    header('Location: ?route=login');
+                    exit;
+                }
+
+                $controller = DependencyInjection::getGastoController();
+                
+                try {
+                    $gastosResponse = $controller->index();
+                    $gastos = array_map(fn($g) => $g->toArray(), $gastosResponse);
+                } catch (Throwable $e) {
+                    $gastos = []; 
+                }
+
+                View::render('gastos/board', [
+                    'pageTitle' => 'Mis Gastos',
+                    'gastos'    => $gastos,
+                    'authUser'  => $_SESSION['auth']
+                ]);
+                exit;
+            break;
+
+                case 'gastos.delete':
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                $controller = DependencyInjection::getGastoController();
+                
+                $controller->delete((string)$id);
+                Flash::setSuccess("Gasto eliminado correctamente.");
+            }
+            header('Location: ?route=gastos.index');
+            exit;
+            break;
+
+            case 'gastos.create':
+            View::render('gastos/create', array(
+                'pageTitle' => 'Registrar Nuevo Gasto',
+                'authUser'  => $_SESSION['auth'] ?? null,
+                'errors'    => Flash::errors(),
+                'old'       => Flash::old(),
+            ));
+            break;
+
+            case 'gastos.edit':
+                $id = $_GET['id'] ?? null;
+                if (!$id) {
+                    header('Location: ?route=gastos.index');
+                    exit;
+                }
+
+                $controller = DependencyInjection::getGastoController();
+                // Usamos el show($id) que ya tienes en tu controlador para traer el gasto
+                $gastoResponse = $controller->show((string)$id); 
+
+                View::render('gastos/edit', [
+                    'pageTitle' => 'Editar Gasto',
+                    'gasto'     => $gastoResponse->toArray(),
+                    'authUser'  => $_SESSION['auth']
+                ]);
+                exit;
+            break;
+
+           case 'gastos.update':
+    try {
+        $controller = DependencyInjection::getGastoController();
+        
+       
+        $request = new UpdateGastoWebRequest(
+            (string)$_POST['id'],
+            (string)$_POST['fecha'],
+            (string)$_POST['tipo_servicio'],
+            (float)$_POST['monto_sin_iva'],
+            (string)$_POST['lugar'],
+            (string)($_POST['descripcion'] ?? '')
+        );
+
+        $controller->update($request);
+        
+        Flash::setSuccess("¡Gasto actualizado!");
+        header('Location: ?route=gastos.index');
+    } catch (Exception $e) {
+        Flash::setMessage("Error: " . $e->getMessage());
+        header('Location: ?route=gastos.index');
+    }
+    exit;
+break;
+
+            case 'gastos.store':
+                $controller = DependencyInjection::getGastoController();
+
+                // 1. Capturamos y formateamos (aseguramos el formato Y-m-d)
+                $rawFecha = $_POST['fecha'] ?? '';
+                $fechaValida = date("Y-m-d", strtotime(str_replace('/', '-', $rawFecha)));
+
+                // 2. Creamos el WebRequest respetando el orden de tu constructor
+                $request = new CreateGastoWebRequest(
+                    (string)uniqid(),
+                    $fechaValida,
+                    (string)($_POST['tipo_servicio'] ?? ''),
+                    (float)($_POST['monto_sin_iva'] ?? 0),
+                    (string)($_POST['lugar'] ?? ''),
+                    (string)($_POST['descripcion'] ?? '')
+                );
+
+                $controller->store($request);
+                
+                header('Location: index.php?action=gastos.index');
+                
+            break;
+                        
+
         default:
             throw new RuntimeException('Acción no soportada.');
     }

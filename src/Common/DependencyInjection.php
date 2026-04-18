@@ -35,7 +35,7 @@ final class DependencyInjection
         }
     }
 
-    // --- MAPPERS ---
+    // --- MAPPERS DE USUARIO ---
     public static function getUserPersistenceMapper(): UserPersistenceMapper
     {
         ClassLoader::loadClass('UserPersistenceMapper');
@@ -66,8 +66,7 @@ final class DependencyInjection
         return new CreateUserService($repo, $repo);
     }
 
-    /** * ESTE ES EL QUE FALTABA: Caso de uso para Login 
-     */
+    
     public static function getLoginUseCase(): LoginUseCase
     {
         ClassLoader::loadClass('LoginService');
@@ -111,6 +110,77 @@ final class DependencyInjection
             self::getGetAllUsersUseCase(),
             self::getDeleteUserUseCase(),
             self::getUserWebMapper(),
+        );
+    }
+
+    // --- MAPPERS DE GASTOS ---
+    public static function getGastoPersistenceMapper(): GastoPersistenceMapper
+    {
+        ClassLoader::loadClass('GastoPersistenceMapper');
+        return new GastoPersistenceMapper();
+    }
+
+    public static function getGastoWebMapper(): GastoWebMapper
+    {
+        ClassLoader::loadClass('GastoWebMapper');
+        return new GastoWebMapper();
+    }
+
+    // --- REPOSITORIO DE GASTOS ---
+    public static function getGastoRepository(): GastoRepositoryMySQL
+    {
+        ClassLoader::loadClass('GastoRepositoryMySQL');
+        return new GastoRepositoryMySQL(
+            self::getPdo(), 
+            self::getGastoPersistenceMapper()
+        );
+    }
+
+    // --- CASOS DE USO DE GASTOS ---
+    public static function getCreateGastoUseCase(): CreateGastoUseCase
+    {
+        ClassLoader::loadClass('CreateGastoService');
+        return new CreateGastoService(self::getGastoRepository());
+    }
+
+    public static function getUpdateGastoUseCase(): UpdateGastoUseCase
+    {
+        ClassLoader::loadClass('UpdateGastoService');
+        $repo = self::getGastoRepository();
+        return new UpdateGastoService($repo, $repo);
+    }
+
+    public static function getGetGastoByIdUseCase(): GetGastoByIdUseCase
+    {
+        ClassLoader::loadClass('GetGastoByIdService');
+        return new GetGastoByIdService(self::getGastoRepository());
+    }
+
+    public static function getGetAllGastosUseCase(): GetAllGastosUseCase
+    {
+        ClassLoader::loadClass('GetAllGastosService');
+        return new GetAllGastosService(self::getGastoRepository());
+    }
+
+    public static function getDeleteGastoUseCase(): DeleteGastoUseCase
+    {
+        ClassLoader::loadClass('DeleteGastoService');
+        $repo = self::getGastoRepository();
+        // Le pasamos el repo DOS veces porque el repo cumple ambas funciones (Delete y GetById)
+        return new DeleteGastoService($repo, $repo);
+    }
+
+    // --- EL CONTROLADOR DE GASTOS ---
+    public static function getGastoController(): GastoController
+    {
+        ClassLoader::loadClass('GastoController');
+        return new GastoController(
+            self::getCreateGastoUseCase(),
+            self::getUpdateGastoUseCase(),
+            self::getGetGastoByIdUseCase(),
+            self::getGetAllGastosUseCase(),
+            self::getDeleteGastoUseCase(),
+            self::getGastoWebMapper()
         );
     }
 }

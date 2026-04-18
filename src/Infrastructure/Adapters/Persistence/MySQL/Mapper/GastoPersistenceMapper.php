@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
-
+/*
 require_once __DIR__ . '/../Dto/GastoPersistenceDto.php';
 require_once __DIR__ . '/../Entity/GastoEntity.php';
-require_once __DIR__ . '/../../../../../Domain/Models/GastoModel.php';
+require_once realpath(__DIR__ . '/../../../../..') . '/Domain/Models/GastosModel.php';
 require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoId.php';
 require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoFecha.php';
 require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoAmount.php';
 require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoLugar.php';
-require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoDescription.php';
+require_once __DIR__ . '/../../../../../Domain/ValueObjects/GastoDescription.php';*/
 
 final class GastoPersistenceMapper
 {

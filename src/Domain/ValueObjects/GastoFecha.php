@@ -6,7 +6,7 @@ class GastoFecha
 
     public function __construct(string $value)
     {
-        if (empty(empty($value))) {
+        if (empty($value)) {
             throw InvalidGastoFechaException::becauseValueIsEmpty();
         }
 
